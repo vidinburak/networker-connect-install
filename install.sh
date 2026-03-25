@@ -18,7 +18,7 @@ set -u
 
 # ── Sabitler ─────────────────────────────────────────────────
 REPO="vidinburak/networker-connect"
-RELEASE_URL="https://github.com/vidinburak/networker-connect/releases/download/v2.4.2/networker-connect-v2.4.2.tar.gz"
+RELEASE_URL="https://github.com/vidinburak/networker-connect/releases/download/v2.4.3/networker-connect-v2.4.3.tar.gz"
 API_URL="https://api.github.com/repos/${REPO}/releases/latest"
 INSTALL_BIN="/usr/local/bin/vpn"
 UPDATE_CONF="/etc/openfortivpn/update.conf"
