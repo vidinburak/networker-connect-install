@@ -75,7 +75,7 @@ fi
 
 if [ -n "$existing_token" ]; then
     info "Kayıtlı token bulundu: ${existing_token:0:12}..."
-    printf "  Ayni token kullanilsin mi? (E/h): "; read -r use_existing
+    printf "  Ayni token kullanilsin mi? (E/h): "; read -r use_existing < /dev/tty
     if [ "$use_existing" = "h" ] || [ "$use_existing" = "H" ]; then
         existing_token=""
     fi
@@ -88,7 +88,7 @@ if [ -z "$existing_token" ]; then
     info "-> Personal Access Tokens -> Tokens (classic) -> Generate"
     info "-> Scope: 'repo'"
     printf "\n"
-    printf "  Token (ghp_...): "; read -rs token; printf "\n"
+    printf "  Token (ghp_...): "; read -rs token < /dev/tty; printf "\n"
     [ -z "$token" ] && err "Token bos olamaz."
 else
     token="$existing_token"
@@ -241,13 +241,13 @@ if [ "$OS" = "macos" ]; then
     PLIST_PATH="/Library/Application Support/Fortinet/FortiClient/conf/vpn.plist"
     if [ -f "$PLIST_PATH" ]; then
         printf "  ${G}FortiClient profilleri bulundu!${NC}\n"
-        printf "\n  Simdi import edilsin mi? (e/H): "; read -r import_yn
+        printf "\n  Simdi import edilsin mi? (e/H): "; read -r import_yn < /dev/tty
         [ "$import_yn" = "e" ] || [ "$import_yn" = "E" ] && \
             "$INSTALL_BIN" import "$PLIST_PATH" || true
     fi
 elif [ -f "$HOME/.config/FortiClient/vpn.conf" ]; then
     printf "  ${G}FortiClient profilleri bulundu!${NC}\n"
-    printf "\n  Simdi import edilsin mi? (e/H): "; read -r import_yn
+    printf "\n  Simdi import edilsin mi? (e/H): "; read -r import_yn < /dev/tty
     [ "$import_yn" = "e" ] || [ "$import_yn" = "E" ] && \
         "$INSTALL_BIN" import "$HOME/.config/FortiClient/vpn.conf" || true
 fi
