@@ -18,7 +18,7 @@ set -u
 
 # ── Sabitler ─────────────────────────────────────────────────
 REPO="vidinburak/networker-connect"
-RELEASE_URL="https://github.com/vidinburak/networker-connect/releases/download/v2.5.1/networker-connect-v2.5.1.tar.gz"
+RELEASE_URL="https://github.com/vidinburak/networker-connect/releases/download/v2.5.2/networker-connect-v2.5.2.tar.gz"
 API_URL="https://api.github.com/repos/${REPO}/releases/latest"
 INSTALL_BIN="/usr/local/bin/vpn"
 UPDATE_CONF="/etc/openfortivpn/update.conf"
@@ -288,6 +288,27 @@ ok "vpn.sh kuruldu: $INSTALL_BIN"
     cp "$new_setup" "$(dirname "$INSTALL_BIN")/setup.sh" 2>/dev/null && \
         ok "setup.sh kuruldu."
 }
+
+# ── Shell Completion kur ──────────────────────────────────────
+new_comp=$(find "$tmp_dir" -name "vpn-completion.sh" 2>/dev/null | head -1)
+if [ -n "$new_comp" ] && [ -f "$new_comp" ]; then
+    COMP_DIR="/etc/openfortivpn"
+    cp "$new_comp" "$COMP_DIR/vpn-completion.sh" 2>/dev/null && \
+        chmod 644 "$COMP_DIR/vpn-completion.sh" 2>/dev/null
+
+    # bash/zsh rc dosyalarina source satiri ekle (kullanicinin kendi dosyasina)
+    comp_line="[ -f /etc/openfortivpn/vpn-completion.sh ] && . /etc/openfortivpn/vpn-completion.sh"
+    real_user="${SUDO_USER:-$USER}"
+    real_home=$(eval echo "~$real_user" 2>/dev/null || echo "$HOME")
+
+    for rc in "$real_home/.bashrc" "$real_home/.zshrc"; do
+        [ -f "$rc" ] || continue
+        if ! grep -qF "vpn-completion.sh" "$rc" 2>/dev/null; then
+            printf "\n# NetWorker Connect completion\n%s\n" "$comp_line" >> "$rc"
+        fi
+    done
+    ok "Shell completion kuruldu (yeni terminalde aktif: vpn connect <TAB>)"
+fi
 
 rm -rf "$tmp_dir"
 
